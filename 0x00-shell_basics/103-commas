@@ -1,0 +1,2 @@
+#!bin/bash
+(ls -a | awk '{if(NR==1) print; else if(NR==2) print; else print | "sort -f"}' | awk '{if($1~/^\.\/|^\/$/) {print $0"/"} else {print $0}}' | tr '\n' ',' | sed 's/,$/\n/' | sed 's/\(,\.\.\?\/,\)/\n\1/' | sed 's/\n,/,/g')
