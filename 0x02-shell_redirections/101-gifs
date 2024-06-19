@@ -1,0 +1,8 @@
+#!/bin/bash
+find . -type f -iname '*.gif' -print0 |
+  while IFS= read -r -d '' file; do
+  filename=$(basename "$file" .gif)
+    echo "$filename"
+  done | LC_COLLATE=C sort -f |
+uniq &&
+  echo
