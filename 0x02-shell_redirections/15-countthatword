@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -c -i "bin" /filename
+grep -c -i "bin" /15-countthatword
