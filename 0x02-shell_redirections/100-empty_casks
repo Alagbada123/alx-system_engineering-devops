@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -type f -empty -exec sh -c 'basename "$0"' {} \; -o -type d -empty -exec sh -c 'basename "$0"' {} \; -print
+find . -empty -exec sh -c 'for f; do printf "%s\n" "${f##*/}"; done' _ {} +; echo
