@@ -1,2 +1,3 @@
 #!/bin/bash
-find . -empty -exec sh -c 'for f; do printf "%s\n" "${f##*/}"; done' _ {} +; echo
+find . -empty -printf "%f\n"
+
