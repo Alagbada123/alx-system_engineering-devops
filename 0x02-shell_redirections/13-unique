@@ -1,2 +1,2 @@
 #!/bin/bash
-echo -e "apple\nbanana\napple\ncherry\ndate\nbanana\nelderberry" | sort | uniq -u | sort
+sort | uniq -u
