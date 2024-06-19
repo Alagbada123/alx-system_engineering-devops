@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -type d -empty -print -o -type f -empty -print
+find . -type f -empty -exec sh -c 'basename "$0"' {} \; -o -type d -empty -exec sh -c 'basename "$0"' {} \; -print
