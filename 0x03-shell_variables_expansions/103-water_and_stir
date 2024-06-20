@@ -1,0 +1,2 @@
+#!/bin/bash
+printf '%s\n' "$(echo "ibase=5; $WATER" | bc + echo "ibase=6; $STIR" | bc | xargs | bc | xargs -I{} echo "obase=7; {}" | bc)"
