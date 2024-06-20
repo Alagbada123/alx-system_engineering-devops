@@ -1,2 +1,2 @@
 #!/bin/bash
-printf "%s=%s\n" $(compgen -e)
+HBTN=89; printf "%s=%s\n" "${HBTN}" "${!HBTN}"
