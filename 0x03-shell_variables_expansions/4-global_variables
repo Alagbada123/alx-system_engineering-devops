@@ -1,2 +1,2 @@
 #!/bin/bash
-env | awk -F= '{ printf "%-30s %s\n", $1, $2 }'
+printf "%s\n" $(compgen -e)
