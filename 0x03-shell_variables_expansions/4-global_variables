@@ -1,2 +1,2 @@
 #!/bin/bash
-'HBTN=89\n' printf "%s=%s\n" "${HBTN}" "${!HBTN}"
+printenv
