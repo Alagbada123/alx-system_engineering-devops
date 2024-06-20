@@ -1,2 +1,2 @@
 #!/bin/bash
-printf "%s\n" $(compgen -e)
+printf "%s=%s\n" $(compgen -e)
