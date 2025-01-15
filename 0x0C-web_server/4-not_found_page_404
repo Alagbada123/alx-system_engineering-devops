@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
-# Install and configure nginx for redirection
+# Install and configure Nginx with a custom 404 page
 
-function install_and_configure_nginx(){
+function install_and_configure_nginx() {
+    # Update package list and install Nginx
     sudo apt-get update
     sudo apt-get -y install nginx
+
+    # Configure the default Nginx site
     sudo chown -R "$USER":"$USER" /var/www/html/
     echo 'Hello World!' > /var/www/html/index.html
     sudo chown -R "$USER":"$USER" /etc/nginx/sites-available/
+
+    # Add the redirection configuration
     redirect="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
     sudo sed -i "26i $redirect" /etc/nginx/sites-available/default
 
+    # Create a custom 404 page
     echo "Ceci n'est pas une page" | sudo tee /usr/share/nginx/html/404.html
-    line="\\\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}"
-    sudo sed -i "27i $line" /etc/nginx/sites-available/default
+
+    # Add custom 404 configuration
+    custom_404="\\\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}"
+    sudo sed -i "28i $custom_404" /etc/nginx/sites-available/default
+
+    # Reload or restart Nginx
     if [[ $(pgrep nginx) ]]; then
         sudo nginx -s reload
     else
         sudo service nginx start
     fi
 }
+
 install_and_configure_nginx;
