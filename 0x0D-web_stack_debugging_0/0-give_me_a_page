@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
-# Configure Apache to display "Hello ALX" on the root path
-echo "Hello ALX" > /var/www/html/index.html
+# Install and configure Apache to return "Hello ALX" on the root path
+
+# Set ServerName to suppress warnings
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Write "Hello ALX" to the default index.html
+echo "Hello ALX" > /var/www/html/index.html
+
+# Start the Apache service
+service apache2 start
+
+# Confirm that Apache is running
+if pgrep apache2 > /dev/null; then
+  echo "apache2 is running"
+else
+  echo "Failed to start apache2" >&2
+  exit 1
+fi
+
