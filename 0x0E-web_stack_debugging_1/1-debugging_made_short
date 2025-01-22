@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# configures a server to listening on port 80 of all servers active IPv4 IPs
-
-sudo service nginx stop
+# Configure nginx to listen on port 80 and kill the process ( so the init deamon will flag it as off)
+sudo sed -i 's/8080/80/' /etc/nginx/sites-enabled/default
+sudo  service nginx restart
 sudo rm -f /run/nginx.pid
