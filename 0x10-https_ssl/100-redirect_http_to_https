@@ -41,7 +41,7 @@ frontend alagbada123-tech-frontend
         default_backend alagbada123-tech-backend
 
 frontend alagbada123-tech-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/www.alagbada123-tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.alagbada123.tech.pem
         http-request set-header X-Forwarded-Proto https
         default_backend alagbada123-tech-backend
 
