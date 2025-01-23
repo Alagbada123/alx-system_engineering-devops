@@ -1,0 +1,41 @@
+global
+    log     /dev/log local0
+    maxconn 2048
+    user    haproxy
+    group   haproxy
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option  redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+    option  forwardfor
+    option  http-server-close
+
+frontend alagbada123-tech-http
+    bind   0.0.0.0:80
+    reqadd X-Forwarded-Proto:\ http
+    default_backend alagbada123-tech-backend
+    redirect scheme https code 301 if !{ ssl_fc }
+
+frontend alagbada123-tech-https
+    bind   0.0.0.0:443 ssl crt /etc/haproxy/certs/www.bdbnb.site.pem
+    reqadd X-Forwarded-Proto:\ https
+    acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
+    use_backend alagbada123-tech-backend if letsencrypt-acl
+    default_backend alagbada123-tech-backend
+
+backend alagbada123-tech-backend
+    balance  roundrobin
+    redirect scheme https if !{ ssl_fc }
+    server 806488-web-01 3.90.65.231:80 check
+    server 806488-web-02 100.26.212.56:80 check
+
+backend alagbada123-tech-backend
+    server letsencrypt 127.0.0.1:54321
