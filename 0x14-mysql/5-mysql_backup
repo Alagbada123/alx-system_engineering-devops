@@ -1,11 +1,43 @@
 #!/usr/bin/env bash
 # backup and compress my databases
 
-# variables
+# Check if a password argument is provided
+if [ -z "$1" ]; then
+    echo "Error: MySQL root password is required as the first argument."
+    exit 1
+fi
+
+# Variables
 day=$(date +"%d")
 month=$(date +"%m")
 year=$(date +"%Y")
-file_name="$day-$month-$year.tar.gz"
+file_name="db_backup_$day-$month-$year.tar.gz"
+backup_file="backup.sql"
 
-mysqldump --all-databases -u root --password="$1" > backup.sql
-tar -czvf "$file_name" backup.sql
+# Step 1: Create a MySQL dump
+echo "Dumping all databases..."
+mysqldump --all-databases -u root --password="$1" > "$backup_file" 2> mysqldump_error.log
+
+# Check if mysqldump was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to create MySQL dump. Check 'mysqldump_error.log' for details."
+    exit 1
+fi
+
+# Step 2: Compress the SQL dump file into a tar.gz archive
+echo "Compressing the backup file..."
+tar -czvf "$file_name" "$backup_file" 2> tar_error.log
+
+# Check if tar was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to compress the backup file. Check 'tar_error.log' for details."
+    rm -f "$backup_file" "$file_name" mysqldump_error.log tar_error.log
+    exit 1
+fi
+
+# Step 3: Clean up the temporary SQL dump file
+echo "Cleaning up temporary files..."
+rm -f "$backup_file"
+
+# Success message
+echo "Backup completed successfully. File: $file_name"
