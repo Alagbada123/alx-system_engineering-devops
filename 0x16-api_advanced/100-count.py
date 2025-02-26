@@ -1,20 +1,26 @@
 #!/usr/bin/python3
-"""Recursive function to query the Reddit API and count occurrences of keywords in hot article titles."""
+"""Recursive function to query the Reddit API and 
+count occurrences of keywords in hot article titles."""
 import requests
+
 
 def count_words(subreddit, word_list, results=None, after=None):
     """
-    Recursively queries the Reddit API, counts occurrences of keywords in hot article titles,
+    Recursively queries the Reddit API,
+    counts occurrences of keywords in hot article titles,
     and prints the results.
 
     Args:
         subreddit (str): The name of the subreddit.
         word_list (list): A list of keywords to count in the titles.
-        results (dict, optional): A dictionary to store keyword counts. Defaults to None.
-        after (str, optional): The 'after' parameter for pagination. Defaults to None.
+        results (dict, optional): A dictionary
+        to store keyword counts. Defaults to None.
+        after (str, optional): The 'after'
+        parameter for pagination. Defaults to None.
 
     Returns:
-        None: This function does not return anything; it prints the results directly.
+        None: This function does not return anything;
+        it prints the results directly.
     """
     # Initialize the results dictionary if it's None
     if results is None:
@@ -35,7 +41,8 @@ def count_words(subreddit, word_list, results=None, after=None):
 
     try:
         # Send a GET request to the Reddit API
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(url, headers=headers,
+                                params=params, allow_redirects=False)
 
         # Check if the response status code indicates a valid subreddit
         if response.status_code == 200:
@@ -47,14 +54,15 @@ def count_words(subreddit, word_list, results=None, after=None):
 
             # Process each post's title
             for post in posts:
-                title = post.get("data", {}).get("title", "").lower()  # Convert title to lowercase
+                title = post.get("data", {}).get("title", "").lower()
                 words = title.split()  # Split the title into words
 
                 # Count occurrences of keywords in the title
                 for word in word_list:
-                    normalized_word = word.lower()  # Normalize the keyword to lowercase
+                    normalized_word = word.lower()
                     if normalized_word in results:
-                        results[normalized_word] += words.count(normalized_word)
+                        results[normalized_word] += words.count
+                        (normalized_word)
                     else:
                         results[normalized_word] = words.count(normalized_word)
 
@@ -77,6 +85,7 @@ def count_words(subreddit, word_list, results=None, after=None):
         # Handle any request-related exceptions (e.g., network issues)
         return
 
+
 def print_results(results, word_list):
     """
     Prints the sorted count of keywords based on the results dictionary.
@@ -89,10 +98,13 @@ def print_results(results, word_list):
         None
     """
     # Filter out keywords with zero count
-    filtered_results = {word.lower(): results.get(word.lower(), 0) for word in word_list if results.get(word.lower(), 0) > 0}
+    filtered_results = {word.lower():
+                        results.get(word.lower(), 0) for word in word_list if results.get(word.lower(), 0) > 0}
 
-    # Sort the results by count (descending) and then alphabetically (ascending)
-    sorted_results = sorted(filtered_results.items(), key=lambda x: (-x[1], x[0]))
+    # Sort the results by count (descending) 
+    # and then alphabetically (ascending)
+    sorted_results = sorted(filtered_results.items(),
+                            key=lambda x: (-x[1], x[0]))
 
     # Print the results
     for word, count in sorted_results:
