@@ -1,36 +1,16 @@
 #!/usr/bin/python3
-
-"""
-Query a subreddit and return the number of
-total subscribers in that subredit
-"""
-
-from requests import get
-from sys import argv
+"""Function to query subscribers on a given Reddit subreddit."""
+import requests
 
 
-headers = {
-    "User-Agent": "Of course I had to use a custom User-Agent",
-    "X-Forwared-For": "iamthecavalry"
-}
-
-
-def number_of_subscribers(subreddit: str) -> int:
-    """
-    Query the subreddit and return the number of
-    Active subs. If its an invalid subredit, return 0
-    """
-    response = get("https://www.reddit.com/r/{}/about.json".format(subreddit),
-                   headers=headers)
-    data = response.json()
-    try:
-        if 'error' in data.keys():
-            return 0
-        else:
-            return data['data']['subscribers']
-    except Exception as e:
+def number_of_subscribers(subreddit):
+    """Return the total number of subscribers on a given subreddit."""
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    headers = {
+        "User-Agent": "InteractionBitter899"
+    }
+    response = requests.get(url, headers=headers, allow_redirects=False)
+    if response.status_code == 404:
         return 0
-
-
-if __name__ == "__main__":
-    print(number_of_subscribers(argv[1]))
+    results = response.json().get("data")
+    return results.get("subscribers")
