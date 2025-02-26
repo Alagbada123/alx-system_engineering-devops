@@ -98,8 +98,9 @@ def print_results(results, word_list):
         None
     """
     # Filter out keywords with zero count
-    filtered_results = {word.lower():results.get(word.lower(), 0)
-                        for word in word_list if results.get(word.lower(), 0) > 0}
+    filtered_results = {word.lower(): results.get(word.lower(), 0)
+                        for word in word_list if results.get
+                        (word.lower(), 0) > 0}
 
     # Sort the results by count (descending)
     # and then alphabetically (ascending)
