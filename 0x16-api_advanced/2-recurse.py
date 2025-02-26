@@ -1,15 +1,19 @@
 #!/usr/bin/python3
-"""Recursive function to query the Reddit API and return all hot article titles."""
+"""Recursive function to query Reddit API and return all hot article titles."""
 import requests
+
 
 def recurse(subreddit, hot_list=None, after=None):
     """
-    Recursively queries the Reddit API and returns a list containing the titles of all hot articles.
+    Recursively queries the Reddit API and returns a, 
+    list containing the titles of all hot articles.
 
     Args:
         subreddit (str): The name of the subreddit.
-        hot_list (list, optional): The list to store the titles of hot articles. Defaults to None.
-        after (str, optional): The 'after' parameter for pagination. Defaults to None.
+        hot_list (list, optional): The list to store the titles of,
+        hot articles. Defaults to None.
+        after (str, optional): The 'after' parameter for pagination.
+        Defaults to None.
 
     Returns:
         list: A list of all hot article titles for the given subreddit.
@@ -34,7 +38,8 @@ def recurse(subreddit, hot_list=None, after=None):
 
     try:
         # Send a GET request to the Reddit API
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(url, headers=headers,
+                                params=params, allow_redirects=False)
 
         # Check if the response status code indicates a valid subreddit
         if response.status_code == 200:
