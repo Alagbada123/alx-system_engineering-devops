@@ -5,7 +5,7 @@ import requests
 def top_ten(subreddit):
     """
     Prints the titles of the first 10 hot posts listed for a given subreddit.
-    
+
     Args:
         subreddit (str): The name of the subreddit.
 
@@ -14,21 +14,21 @@ def top_ten(subreddit):
     """
     # Define the URL for the Reddit API endpoint
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    
+
     # Set a custom User-Agent to avoid Too Many Requests errors
     headers = {
         "User-Agent": "custom-script:v1.0 (by /u/InteractionBitter899)"
     }
-    
+
     try:
         # Send a GET request to the Reddit API
         response = requests.get(url, headers=headers, allow_redirects=False)
-        
+
         # Check if the response status code indicates a valid subreddit
         if response.status_code == 200:
             # Parse the JSON response
             data = response.json()
-            
+
             # Extract the list of posts from the 'data.children' field
             posts = data.get("data", {}).get("children", [])
             
@@ -42,7 +42,6 @@ def top_ten(subreddit):
         else:
             # For any other status code, print None as a fallback
             print(None)
-    
     except requests.RequestException:
-        # Handle any request-related exceptions 
+        # Handle any request-related exceptions
         print(None)
