@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Recursive function to query the Reddit API and 
+"""Recursive function to query the Reddit API and
 count occurrences of keywords in hot article titles."""
 import requests
 
@@ -98,10 +98,10 @@ def print_results(results, word_list):
         None
     """
     # Filter out keywords with zero count
-    filtered_results = {word.lower():
-                        results.get(word.lower(), 0) for word in word_list if results.get(word.lower(), 0) > 0}
+    filtered_results = {word.lower():results.get(word.lower(), 0)
+                        for word in word_list if results.get(word.lower(), 0) > 0}
 
-    # Sort the results by count (descending) 
+    # Sort the results by count (descending)
     # and then alphabetically (ascending)
     sorted_results = sorted(filtered_results.items(),
                             key=lambda x: (-x[1], x[0]))
