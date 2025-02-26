@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""Function to query the Reddit API and print the titles of the first 10 hot posts."""
+"""Function to query the Reddit API and print titles of first 10 hot posts."""
 import requests
+
 
 def top_ten(subreddit):
     """
@@ -31,7 +32,7 @@ def top_ten(subreddit):
 
             # Extract the list of posts from the 'data.children' field
             posts = data.get("data", {}).get("children", [])
-            
+
             # Print the titles of the first 10 hot posts
             for i, post in enumerate(posts[:10], start=1):
                 title = post.get("data", {}).get("title", "No Title")
