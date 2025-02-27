@@ -1,7 +1,6 @@
-#!/usr/bin/env puppet
-# fix internal server error
-exec { 'web stack deubging':
-  command  => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
-  path     => '/usr/local/bin/:/bin/',
-  provider => 'shell'
+# automated puppet fix (to find out why Apache is returning a 500 error)
+
+exec { 'Fix wordpress site':
+  command  => 'sudo sed -i "s/.phpp/.php/" /var/www/html/wp-settings.php',
+  provider => shell,
 }
