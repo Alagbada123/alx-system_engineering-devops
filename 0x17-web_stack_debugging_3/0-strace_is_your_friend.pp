@@ -1,6 +1,15 @@
-# Fixes bad `phpp` extensions to `php` in the WordPress file `wp-settings.php`.
+# Fix Apache 500 error caused by incorrect permissions on web directory
+file { '/var/www/html':
+  ensure  => directory,
+  mode    => '0755',
+  owner   => 'www-data',
+  group   => 'www-data',
+  recurse => true, # Optional: recursively set permissions if needed
+  notify  => Service['apache2'], # Restart Apache if changes are made
+}
 
-exec { 'fix-wordpress':
-  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
-  path    => '/usr/local/bin/:/bin/'
+# Ensure Apache service is managed
+service { 'apache2':
+  ensure => running,
+  enable => true,
 }
