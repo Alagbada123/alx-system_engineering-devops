@@ -6,8 +6,6 @@ server {
     # ip address of my domain name
     server_name 3.90.65.231;
 
-    index index.html index.htm index.nginx-debian.html
-
     #custom header name
     add_header X-Served-By $HOSTNAME;
 
