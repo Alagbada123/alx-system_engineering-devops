@@ -1,0 +1,24 @@
+server {
+    # Listen on port 80
+    listen      80 default_server;
+    listen      [::]:80 default_server ipv6only=on;
+
+    # ip address of my domain name
+    server_name 3.90.65.231;
+
+    index index.html index.htm index.nginx-debian.html
+
+    #custom header name
+    add_header X-Served-By $HOSTNAME;
+
+    #serve /airbnb-onepage/ route from Airbnb_clone_v2
+    location = /airbnb-onepage/ {
+        proxy_pass http://127.0.0.1:5000/airbnb-onepage/;
+    }
+    #404 error page
+    error_page 404 /error_404.html;
+    location /404 {
+        root /var/www/html;
+        internal;
+    }
+}
