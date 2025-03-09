@@ -1,26 +1,29 @@
 #!/usr/bin/env bash
 # Gracefully reloads Gunicorn workers.
 
-# Find the master Gunicorn process ID
-GUNICORN_PID=$(pgrep -f 'gunicorn')
+# Find all PIDs of gunicorn processes
+pids=$(pgrep -f gunicorn)
 
-# Check if Gunicorn is running
-if [ -z "$GUNICORN_PID" ]; then
-    echo "Error: Gunicorn is not running."
-    exit 1
-fi
+# Initialize variable to hold the master PID
+master_pid=""
 
-echo "Reloading Gunicorn (PID: $GUNICORN_PID)..."
+# Iterate through each PID to find the master process
+for pid in $pids; do
+    # Get the parent PID of the current PID
+    ppid=$(ps -o ppid= -p "$pid" | tr -d ' ')
+    
+    # Check if the parent PID is not a gunicorn process
+    if ! echo "$pids" | grep -wq "$ppid"; then
+        master_pid=$pid
+        break
+    fi
+done
 
-# Reload Gunicorn gracefully
-kill -HUP "$GUNICORN_PID"
-
-# Confirm if reload was successful
-sleep 2
-if pgrep -f 'gunicorn' > /dev/null; then
-    echo "Gunicorn reloaded successfully!"
+# If master PID is found, send HUP signal
+if [ -n "$master_pid" ]; then
+    echo "Reloading Gunicorn master process: $master_pid"
+    kill -HUP "$master_pid"
 else
-    echo "Error: Gunicorn failed to reload."
+    echo "No Gunicorn master process found."
     exit 1
 fi
-
