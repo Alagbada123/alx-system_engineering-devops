@@ -1,22 +1,13 @@
 server {
-    # Listen on port 80
-    listen      80 default_server;
-    listen      [::]:80 default_server ipv6only=on;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
 
-    # ip address of my domain name
-    server_name 3.90.65.231;
-
-    #custom header name
-    add_header X-Served-By $HOSTNAME;
-
-    #serve /airbnb-onepage/ route from Airbnb_clone_v2
-    location = /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000/airbnb-onepage/;
-    }
-    #404 error page
-    error_page 404 /error_404.html;
-    location /404 {
-        root /var/www/html;
-        internal;
+    location /airbnb-onepage/ {
+        proxy_pass http://localhost:5000/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
